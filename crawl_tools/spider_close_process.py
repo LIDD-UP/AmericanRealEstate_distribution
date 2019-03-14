@@ -238,15 +238,15 @@ class SpiderCloseProcess(object):
     def execute_spider_close(self):
         conn = get_sql_con()
         # 将realtor_list_json表中的数据拆分开,并删除空的情况
-        # self.splite_list_data(conn)
+        self.splite_list_data(conn)
         # 找到有的propertyId 并且lastUpate和address字段改变了的，这里应该使用批量更新
-        # self.update_detail_data(conn, 10)
+        self.update_detail_data(conn, 10)
         # 找到detail_page_json 表中没有的propertyId，并将它插入到该表中；
-        # self.insert_detail_data(conn)
-        # # 删除在split中没有，但是detail有的数据
+        self.insert_detail_data(conn)
+        # 删除在split中没有，但是detail有的数据
         self.delete_not_exit(conn,10)
-        # # 将搜索条件插入到redis中
-        # self.get_detail_url(conn)
+        # 将搜索条件插入到redis中
+        self.get_detail_url(conn)
         conn.close()
 
 

@@ -12,7 +12,7 @@ from AmericanRealEstate.items import RealtorListPageJsonItem, RealtorDetailPageJ
 from crawl_tools.get_sql_con import get_sql_con
 from crawl_tools.test_file import post_url
 from AmericanRealEstate.settings import post_interface_url
-from AmericanRealEstate.settings import realtor_list_pipeline_process_path, realtor_detial_pipeline_process_path
+from AmericanRealEstate.settings import realtor_list_pipeline_process_path, realtor_detial_pipeline_process_path, spider_close_process_shell_path
 
 
 class RealtordetailPageMysqlPipeline(object):
@@ -67,9 +67,9 @@ class RealtorListPageMysqlsqlPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
-            self.json_process(item['jsonData'])
-            self.bulk_insert_to_mysql(self.houses)
-            # os.system('python {} {}'.format(realtor_list_pipeline_process_path, item['jsonData']))
+            # self.json_process(item['jsonData'])
+            # self.bulk_insert_to_mysql(self.houses)
+            os.system('python {}'.format(realtor_list_pipeline_process_path, item['jsonData']))
             print('发送数据成功')
 
         return item

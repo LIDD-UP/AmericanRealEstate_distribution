@@ -100,7 +100,7 @@ class RealtorCloseSpiderWhenRedisNullSpiderMiddleware(object):
             self.crawler.engine.close_spider(spider, 'closespider_pagecount')
 
     def spider_closed(self, spider):
-        print("关闭详情页爬虫")
+        print("redis queues has no search criteria and close spider")
 
 
 class RealtorDetailPageAMiddleware(object):
