@@ -150,8 +150,66 @@ class SpiderCloseProcess(object):
         print("插入detail 表没有的数据：{}条".format(cursor.rowcount))
         conn.commit()
 
+    def delete_not_exit(self,conn,update_time,batch_size):
+        print("更新detail数据")
+        cursor1 = conn.cursor()
+        cursor2 = conn.cursor()
+        realtor_update_property_id_sql_str = '''
+            SELECT
+                rl.property_id
+            FROM
+                tb_realtor_detail_json rl
+                LEFT JOIN tb_realtor_list_page_json_splite rd ON rl.property_id = rd.property_id 
+            WHERE
+                rd.property_id IS NULL
+        '''
+
+        # 获取需要更新的数据
+        results1 = cursor1.execute(realtor_update_property_id_sql_str)
+
+        # 批量更新数据
+        sql_string1 = '''
+            DELETE FROM tb_realtor_detail_json 
+            WHERE property_id =%s
+        '''
+        sql_string_list = []
+        if update_time == 1:
+            print('第一次更新跟新了{}'.format(cursor1.rowcount))
+            batch_size = batch_size
+        if update_time == 2:
+            batch_size = cursor1.rowcount
+            print('第2次更新跟新了{}'.format(cursor1.rowcount))
+
+        for i in cursor1.fetchall():
+            print(i)
+            sql_string_list.append([i[0]])
+            if len(sql_string_list) == batch_size:
+                cursor2.executemany(sql_string1, sql_string_list)
+                conn.commit()
+                sql_string_list = []
+
+    def get_detail_url(self, conn):
+        import redis
+        pool = redis.ConnectionPool(host='127.0.0.1',
+                                    # password='123456'
+                                    )
+        redis_pool = redis.Redis(connection_pool=pool)
+        redis_pool.flushdb()
+        cursor = conn.cursor()
+        sql_string = '''
+            SELECT
+                property_id
+            FROM
+                tb_realtor_detail_json 
+            where detail_json is NULL 
+            OR is_dirty='1'
+        '''
+        cursor.execute(sql_string)
+        for result in cursor.fetchall():
+            redis_pool.lpush('realtor:property_id', 'http://{}'.format(result[0]))
+        conn.commit()
+
     def execute_spider_close(self):
-        # spider.logger.info('Spider closed: %s', spider.name)
         conn = get_sql_con()
         # 将realtor_list_json表中的数据拆分开,并删除空的情况
         self.splite_list_data(conn)
@@ -160,6 +218,11 @@ class SpiderCloseProcess(object):
         self.update_detail_data(conn, 2, 10)
         # 找到detail_page_json 表中没有的propertyId，并将它插入到该表中；
         self.insert_detail_data(conn)
+        # 删除在split中没有，但是detail有的数据
+        self.delete_not_exit(conn, 1, 10)
+        self.delete_not_exit(conn, 2, 10)
+        # 将搜索条件插入到redis中
+        self.get_detail_url(conn)
         conn.close()
 
 

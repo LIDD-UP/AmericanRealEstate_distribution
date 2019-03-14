@@ -37,6 +37,7 @@ class RealtorASpider(RedisSpider):
         },
         "SPIDER_MIDDLEWARES": {
             'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 544
+
         },
 
         "DEFAULT_REQUEST_HEADERS": {
@@ -63,7 +64,7 @@ class RealtorASpider(RedisSpider):
         'REDIS_HOST': '127.0.0.1',
         'REDIS_PORT': 6379,
 
-        # 指定 redis链接密码，和使用哪一个数据库
+        # 指定 redis链接密码
         # 'REDIS_PARAMS': {
         #     'password': '123456',
         # },

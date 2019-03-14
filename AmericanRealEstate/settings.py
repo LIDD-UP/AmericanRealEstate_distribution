@@ -126,7 +126,9 @@ import pandas as pd
 root_path = r'F:/PycharmProject/AmericanRealEstate'
 
 realtor_list_search_criteria = list(set(list(pd.read_csv(root_path + r'\crawl_tools\realtor_app_list_page_search_criteria_test.csv')['countyStateJoin'])))
-spider_close_process_shell_path = root_path + '\crawl_tools\spider_close_process.py'
+spider_close_process_shell_path = root_path + '/crawl_tools/spider_close_process.py'
+realtor_list_pipeline_process_path = root_path + r'/crawl_tools/realtor_list_pipeline_process.py'
+realtor_detial_pipeline_process_path = root_path + r'/crawl_tools/realtor_detial_pipeline_process.py'
 # post_url
 post_interface_url = 'http://192.168.0.65:8080/America-DataSave/index/saveRealtorDataJson/'
 
