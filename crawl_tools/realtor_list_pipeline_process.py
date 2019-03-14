@@ -6,8 +6,10 @@
 """
 import sys
 import json
-from crawl_tools.get_sql_con import get_sql_con
-
+# from crawl_tools.get_sql_con import get_sql_con
+def test():
+    pass
+get_sql_con = test
 
 class RealtorListPageMysqlsqlPipeline(object):
     houses = []
@@ -53,6 +55,8 @@ if __name__ == "__main__":
     # realtor_test_dict.process_item(dict_data)
     realtor_list_pipeline_process_path ='aa'
     item = {"jsonData": 'aa'}
+    for i in sys.argv:
+        print(i)
 
-    aa = 'python {} {} {}'.format(realtor_list_pipeline_process_path, item['jsonData'], 'dd')
-    print(aa)
+    # aa = 'python {} {} {}'.format(realtor_list_pipeline_process_path, item['jsonData'], 'dd')
+    # print()

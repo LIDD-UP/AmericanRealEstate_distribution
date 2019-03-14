@@ -69,7 +69,9 @@ class RealtorListPageMysqlsqlPipeline(object):
         if isinstance(item, RealtorListPageJsonItem):
             # self.json_process(item['jsonData'])
             # self.bulk_insert_to_mysql(self.houses)
-            os.system('python {}'.format(realtor_list_pipeline_process_path, item['jsonData']))
+            print(item['jsonData'])
+            print(type(item['jsonData']))
+            os.system('python {} {}'.format(realtor_list_pipeline_process_path, str(item['jsonData'])))
             print('发送数据成功')
 
         return item
