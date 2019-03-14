@@ -123,7 +123,7 @@ MYSQL_PASSWORD = '123456'
 
 # 搜索条件设置
 import pandas as pd
-root_path = r'F:/PycharmProject/AmericanRealEstate'
+root_path = r'J:\PycharmProject\AmericanRealEstate_distribution'
 
 realtor_list_search_criteria = list(set(list(pd.read_csv(root_path + r'\crawl_tools\realtor_app_list_page_search_criteria_test.csv')['countyStateJoin'])))
 spider_close_process_shell_path = root_path + '/crawl_tools/spider_close_process.py'
