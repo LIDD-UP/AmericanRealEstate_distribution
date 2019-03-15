@@ -87,10 +87,10 @@ CONCURRENT_REQUESTS = 1
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
+# ITEM_PIPELINES = {
    # 'AmericanRealEstate.pipelines.AmericanrealestatePipeline': 300,
    #  'scrapy_redis.pipelines.RedisPipeline': 300
-}
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -131,7 +131,8 @@ realtor_list_pipeline_process_path = root_path + r'/crawl_tools/realtor_list_pip
 realtor_detial_pipeline_process_path = root_path + r'/crawl_tools/realtor_detial_pipeline_process.py'
 realtor_list_page_main_path = root_path + r'/realtor_list_page_main.py'
 realtor_detail_spider_path = root_path + r'/realtor_a_main.py'
-# post_url
+
+# sql url address
 domain = 'http://127.0.0.1:5000'
 realtor_list_post_interface_url = domain+'/process_list_page_json/'
 realtor_detail_post_interface_url = domain + '/process_detail_page_json/'
@@ -139,10 +140,12 @@ realtor_detial_spider_start_url = domain + '/start_detail_spider/'
 realtor_list_spider_close_process_url = domain + '/spider_close_process/'
 
 
+
 # realtor domain url
 realtor_domain_url = 'https://www.realtor.com/'
 
 MYEXT_ENABLED=True
+
 IDLE_NUMBER=3
 
 

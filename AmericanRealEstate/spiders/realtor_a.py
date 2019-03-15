@@ -53,7 +53,7 @@ class RealtorASpider(RedisSpider):
         },
         "COOKIES_ENABLED": False,
         "REDIRECT_ENABLED": False,
-        "CONCURRENT_REQUESTS" : 3,
+        "CONCURRENT_REQUESTS" : 10,
         "REFERER_ENABLED": False,
         "RETRY_ENABLED": False,
         "REACTOR_THREADPOOL_MAXSIZE":100,
