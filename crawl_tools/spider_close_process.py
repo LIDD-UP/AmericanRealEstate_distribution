@@ -253,3 +253,4 @@ class SpiderCloseProcess(object):
 if __name__ == "__main__":
     close_spider_process = SpiderCloseProcess()
     close_spider_process.execute_spider_close()
+

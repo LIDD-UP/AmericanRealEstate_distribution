@@ -46,19 +46,12 @@ class RealtorListProcess(object):
         conn.close()
         print('清空realtor_list_page_json 表和清空清空realtor_list_page_json_splite 表成功')
 
-    @staticmethod
-    def execute_list_spider():
-        # 本机list spider启动
-        os.system("python {}".format(realtor_list_page_main_path))
-        # 其他机器list spider启动
-        # pass
 
 
 if __name__ == "__main__":
     realtor_process = RealtorListProcess()
     realtor_process.get_list_url()
     realtor_process.truncate_list_json_and_split_table()
-    # realtor_process.execute_list_spider()
 
 
 

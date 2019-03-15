@@ -14,3 +14,9 @@ import os
 #
 # list_a = [aa,bb]
 # print(list_a)
+
+import os
+import sys
+sys.path.append("F:\PycharmProject\AmericanRealEstate")
+
+os.system(r"python F:\PycharmProject\AmericanRealEstate\realtor_list_page_main.py")

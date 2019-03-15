@@ -16,8 +16,8 @@ class RealtorAppListPageSpider(RedisSpider):
 
     custom_settings = {
         "ITEM_PIPELINES": {
-            'AmericanRealEstate.pipelines.RealtorListPageMysqlsqlPipeline': 301,
-
+            # 'AmericanRealEstate.pipelines.RealtorListPageMysqlsqlPipeline': 301,
+            'AmericanRealEstate.pipelines.RealtorListStoredByServerPipeline': 302
         },
         "DOWNLOADER_MIDDLEWARES": {
             # 'AmericanRealEstate.middlewares.RealtorListPageMiddleware': 545,
@@ -25,7 +25,10 @@ class RealtorAppListPageSpider(RedisSpider):
         },
         "SPIDER_MIDDLEWARES": {
             'AmericanRealEstate.middlewares.RealtorListPageMysqlSpiderMiddleware':544,
-            'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 545
+            # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 545
+        },
+        'EXTENSIONS': {
+            'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
         },
         "DEFAULT_REQUEST_HEADERS": {
             "Cache-Control": "public",

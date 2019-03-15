@@ -7,11 +7,12 @@
 
 import json
 import os
+import requests
 
 from AmericanRealEstate.items import RealtorListPageJsonItem, RealtorDetailPageJsonItem
 from crawl_tools.get_sql_con import get_sql_con
 from crawl_tools.test_file import post_url
-from AmericanRealEstate.settings import post_interface_url
+from AmericanRealEstate.settings import realtor_list_post_interface_url, realtor_detail_post_interface_url
 from AmericanRealEstate.settings import realtor_list_pipeline_process_path, realtor_detial_pipeline_process_path, spider_close_process_shell_path
 
 
@@ -68,14 +69,14 @@ class RealtorListStoredByServerPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
-            self.house_list.append(json.loads(item['houseData']))
+            self.house_list.append(json.loads(item['jsonData']))
             if len(self.house_list) >= 3:
                 print('数据显示',self.house_list)
                 post_data = {
                     "data": self.house_list
                 }
-                result = post_url(post_interface_url, json.dumps(post_data))
-                print(result == 'success')
+                result = requests.post(url=realtor_list_post_interface_url, json=json.dumps(post_data))
+                print('发送数据结果{}'.format(result))
 
                 del self.house_list[:]
         return item
@@ -87,7 +88,7 @@ class RealtorDetailStoredByServerPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item,RealtorDetailPageJsonItem):
             detial_format_data = {
-                "detailJson": json.loads(item['jsonData']),
+                "detailJson": json.loads(item['detailJson']),
                 "propertyId": int(item['propertyId'])
             }
             self.house_list.append(detial_format_data)
@@ -96,8 +97,8 @@ class RealtorDetailStoredByServerPipeline(object):
                 post_data = {
                     "data": self.house_list
                 }
-                result = post_url(post_interface_url, json.dumps(post_data))
-                print(result == 'success')
+                result = requests.post(url=realtor_detail_post_interface_url, json=json.dumps(post_data))
+                print('发送数据结果{}'.format(result))
 
                 del self.house_list[:]
         return item

@@ -27,7 +27,8 @@ class RealtorASpider(RedisSpider):
     custom_settings = {
         "ITEM_PIPELINES": {
             'scrapy_redis.pipelines.RedisPipeline': 300,
-            'AmericanRealEstate.pipelines.RealtordetailPageMysqlPipeline': 301,
+            # 'AmericanRealEstate.pipelines.RealtordetailPageMysqlPipeline': 301,
+            'AmericanRealEstate.pipelines.RealtorDetailStoredByServerPipeline':302,
 
 
         },
@@ -36,8 +37,10 @@ class RealtorASpider(RedisSpider):
             'AmericanRealEstate.middlewares.RealtorDetailPageAMiddleware': 545,
         },
         "SPIDER_MIDDLEWARES": {
-            'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 544
-
+            # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 544
+        },
+        'EXTENSIONS':{
+           'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
         },
 
         "DEFAULT_REQUEST_HEADERS": {
@@ -50,7 +53,7 @@ class RealtorASpider(RedisSpider):
         },
         "COOKIES_ENABLED": False,
         "REDIRECT_ENABLED": False,
-        "CONCURRENT_REQUESTS" : 1,
+        "CONCURRENT_REQUESTS" : 3,
         "REFERER_ENABLED": False,
         "RETRY_ENABLED": False,
         "REACTOR_THREADPOOL_MAXSIZE":100,

@@ -6,12 +6,14 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 import random
+import requests
 import time
 import datetime
 import re
 from scrapy import signals
 import os
 from AmericanRealEstate.settings import spider_close_process_shell_path
+from AmericanRealEstate.settings import realtor_list_spider_close_process_url,realtor_detial_spider_start_url
 
 
 class RealtorListPageMiddleware(object):
@@ -27,7 +29,6 @@ class RealtorListPageMiddleware(object):
         print('a:-----------------', a)
         if a == 1:
             time.sleep(3)
-
 
     def process_response(self, request, response, spider):
         print(response.status)
@@ -59,8 +60,10 @@ class RealtorListPageMysqlSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        os.system("python {}".format(spider_close_process_shell_path))
-        print('finish')
+        # os.system("python {}".format(spider_close_process_shell_path))
+        requests.post(url=realtor_list_spider_close_process_url,data="list_spider_close")
+        requests.post(url=realtor_detial_spider_start_url, data="start_detail_spider")
+        print('整个过程完毕')
 
 
 class RealtorCloseSpiderWhenRedisNullSpiderMiddleware(object):
@@ -138,14 +141,12 @@ class RealtorDetailPageAProcessUrlMiddleware(object):
     def __init__(self):
         super(RealtorDetailPageAProcessUrlMiddleware, self).__init__()
 
-    @staticmethod
     def process_request(self, request, spider):
         print(request.url)
         property_id = re.search(r'\d+',request.url).group()
         request._url='https://mapi-ng.rdc.moveaws.com/api/v1/properties/{}?client_id=rdc_mobile_native%2C9.3.7%2Candroid'.format(property_id)
         print(request.url)
 
-    @staticmethod
     def process_response(self, request, response, spider):
 
         return response
