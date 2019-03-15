@@ -20,19 +20,16 @@ class RealtordetailPageMysqlPipeline(object):
         self.conn = get_sql_con()
 
     def process_item(self, item, spider):
-        # if isinstance(item,RealtorDetailPageJsonItem):
-        #     cursor = self.conn.cursor()
-        #     cursor.execute(
-        #         '''
-        #           UPDATE tb_realtor_detail_json set detail_json=%s ,is_dirty='0',last_operation_date=now(),data_interface='1'
-        #           WHERE property_id =%s
-        #         ''', [item['detailJson'], item['propertyId']
-        #               ]
-        #     )
-        #     self.conn.commit()
-            # format_data = {"detailJson": item['detailJson', "propertyId": item['property']]}
-
-        print("发送数据到服务器")
+        if isinstance(item,RealtorDetailPageJsonItem):
+            cursor = self.conn.cursor()
+            cursor.execute(
+                '''
+                  UPDATE tb_realtor_detail_json set detail_json=%s ,is_dirty='0',last_operation_date=now(),data_interface='1'
+                  WHERE property_id =%s
+                ''', [item['detailJson'], item['propertyId']
+                      ]
+            )
+            self.conn.commit()
 
         return item
 
@@ -46,20 +43,14 @@ class RealtorListPageMysqlsqlPipeline(object):
         self.sql = '''
             insert into tb_realtor_list_page_json(json_data,last_operation_date) values(%s,now())
         '''
-        self.sql2 = '''
-            INSERT INTO tb_realtor_list_page_json_splite (property_id, last_update, address, last_operation_date)
-            values(%s,%s,%s,now())
-        '''
 
     def json_process(self, item_data):
         json_dict = json.loads(item_data)
         json_dict_houses = json_dict['listings']
-        # self.houses = [[json.dumps(house['property_id']),json.dumps(house['last_update']),json.dumps(house['address'])] for house in json_dict_houses]
         self.houses = [json.dumps(house) for house in json_dict_houses]
 
     def bulk_insert_to_mysql(self, bulkdata):
         print("插入长度", len(bulkdata))
-        # sql = "insert into realtor_list_page_json(json_data,last_operation_date) values(%s,now())"
         self.cursor.executemany(self.sql, bulkdata)
         print("执行插入完毕")
         self.conn.commit()
@@ -67,15 +58,47 @@ class RealtorListPageMysqlsqlPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
-            # self.json_process(item['jsonData'])
-            # self.bulk_insert_to_mysql(self.houses)
-            print(item['jsonData'])
-            print(type(item['jsonData']))
-            os.system('python {} {}'.format(realtor_list_pipeline_process_path, str(item['jsonData'])))
-            print('发送数据成功')
-
+            self.json_process(item['jsonData'])
+            self.bulk_insert_to_mysql(self.houses)
         return item
 
 
+class RealtorListStoredByServerPipeline(object):
+    house_list = []
 
+    def process_item(self, item, spider):
+        if isinstance(item, RealtorListPageJsonItem):
+            self.house_list.append(json.loads(item['houseData']))
+            if len(self.house_list) >= 3:
+                print('数据显示',self.house_list)
+                post_data = {
+                    "data": self.house_list
+                }
+                result = post_url(post_interface_url, json.dumps(post_data))
+                print(result == 'success')
+
+                del self.house_list[:]
+        return item
+
+
+class RealtorDetailStoredByServerPipeline(object):
+    house_list = []
+
+    def process_item(self, item, spider):
+        if isinstance(item,RealtorDetailPageJsonItem):
+            detial_format_data = {
+                "detailJson": json.loads(item['jsonData']),
+                "propertyId": int(item['propertyId'])
+            }
+            self.house_list.append(detial_format_data)
+            if len(self.house_list) >= 3:
+                print('数据显示',self.house_list)
+                post_data = {
+                    "data": self.house_list
+                }
+                result = post_url(post_interface_url, json.dumps(post_data))
+                print(result == 'success')
+
+                del self.house_list[:]
+        return item
 

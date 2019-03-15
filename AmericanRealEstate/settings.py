@@ -123,12 +123,14 @@ MYSQL_PASSWORD = '123456'
 
 # 搜索条件设置
 import pandas as pd
-root_path = r'J:\PycharmProject\AmericanRealEstate_distribution'
+root_path = r'F:\PycharmProject\AmericanRealEstate'
 
 realtor_list_search_criteria = list(set(list(pd.read_csv(root_path + r'\crawl_tools\realtor_app_list_page_search_criteria_test.csv')['countyStateJoin'])))
 spider_close_process_shell_path = root_path + '/crawl_tools/spider_close_process.py'
 realtor_list_pipeline_process_path = root_path + r'/crawl_tools/realtor_list_pipeline_process.py'
 realtor_detial_pipeline_process_path = root_path + r'/crawl_tools/realtor_detial_pipeline_process.py'
+realtor_list_page_main_path = root_path + r'/realtor_list_page_main.py'
+realtor_detail_spider_path = root_path + r'/realtor_a_main.py'
 # post_url
 post_interface_url = 'http://192.168.0.65:8080/America-DataSave/index/saveRealtorDataJson/'
 
@@ -136,7 +138,7 @@ post_interface_url = 'http://192.168.0.65:8080/America-DataSave/index/saveRealto
 realtor_domain_url = 'https://www.realtor.com/'
 
 # MYEXT_ENABLED=True
-IDLE_NUMBER=5
+IDLE_NUMBER = 5
 
 
 realtor_user_agent_list = list(set([

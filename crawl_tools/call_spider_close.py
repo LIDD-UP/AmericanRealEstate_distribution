@@ -7,4 +7,10 @@
 
 import os
 
-os.system("python spider_close_process.py")
+# os.system("python spider_close_process.py")
+
+# aa = {"aa":"bb","cc":"dd"}
+# bb = {"aa":"bb","cc":"dd"}
+#
+# list_a = [aa,bb]
+# print(list_a)

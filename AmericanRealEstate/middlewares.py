@@ -73,30 +73,24 @@ class RealtorCloseSpiderWhenRedisNullSpiderMiddleware(object):
     @classmethod
     def from_crawler(cls, crawler):
 
-        # 获取配置中的时间片个数，默认为360个，30分钟
         idle_number = crawler.settings.getint('IDLE_NUMBER', 360)
 
-        # 实例化扩展对象
         ext = cls(idle_number, crawler)
 
-        # 将扩展对象连接到信号， 将signals.spider_idle 与 spider_idle() 方法关联起来。
         crawler.signals.connect(ext.spider_closed, signal=signals.spider_closed)
         crawler.signals.connect(ext.spider_idle, signal=signals.spider_idle)
 
-        # return the extension object
         return ext
 
     def spider_idle(self, spider):
-        self.idle_count += 1  # 空闲计数
-        self.idle_list.append(time.time())  # 每次触发 spider_idle时，记录下触发时间戳
-        idle_list_len = len(self.idle_list)  # 获取当前已经连续触发的次数
+        self.idle_count += 1
+        self.idle_list.append(time.time())
+        idle_list_len = len(self.idle_list)
 
-        # 判断 当前触发时间与上次触发时间 之间的间隔是否大于5秒，如果大于5秒，说明redis 中还有key
         if idle_list_len > 2 and self.idle_list[-1] - self.idle_list[-2] > 6:
             self.idle_list = [self.idle_list[-1]]
 
         elif idle_list_len > self.idle_number:
-            # 执行关闭爬虫操作
             self.crawler.engine.close_spider(spider, 'closespider_pagecount')
 
     def spider_closed(self, spider):
@@ -144,12 +138,14 @@ class RealtorDetailPageAProcessUrlMiddleware(object):
     def __init__(self):
         super(RealtorDetailPageAProcessUrlMiddleware, self).__init__()
 
+    @staticmethod
     def process_request(self, request, spider):
         print(request.url)
         property_id = re.search(r'\d+',request.url).group()
         request._url='https://mapi-ng.rdc.moveaws.com/api/v1/properties/{}?client_id=rdc_mobile_native%2C9.3.7%2Candroid'.format(property_id)
         print(request.url)
 
+    @staticmethod
     def process_response(self, request, response, spider):
 
         return response
