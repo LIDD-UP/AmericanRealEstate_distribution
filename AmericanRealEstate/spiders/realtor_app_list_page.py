@@ -50,7 +50,7 @@ class RealtorAppListPageSpider(RedisSpider):
         "REACTOR_THREADPOOL_MAXSIZE": 100,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         # "LOG_FILE": "realtor_log.txt",
-        "LOG_LEVEL": 'ERROR',
+        "LOG_LEVEL": 'DEBUG',
 
         # 指定 redis链接密码
         # 'REDIS_PARAMS': {
