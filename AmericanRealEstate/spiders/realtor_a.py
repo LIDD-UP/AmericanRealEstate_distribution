@@ -64,7 +64,7 @@ class RealtorASpider(RedisSpider):
 
         # "LOG_FILE": "realtor_log.txt",
         # "LOG_LEVEL": 'INFO',
-        'REDIS_HOST': '127.0.0.1',
+        'REDIS_HOST': '138.197.143.39',
         'REDIS_PORT': 6379,
 
         # 指定 redis链接密码

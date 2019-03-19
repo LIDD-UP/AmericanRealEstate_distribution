@@ -43,7 +43,9 @@ class RealtorAppListPageSpider(RedisSpider):
         "REFERER_ENABLED": False,
         "RETRY_ENABLED": False,
         "CONCURRENT_REQUESTS":  15,
-        "REDIS_HOST": '127.0.0.1',
+
+        # "REDIS_HOST": '127.0.0.1',
+        "REDIS_HOST": '138.197.143.39',
         'REDIS_PORT': 6379,
         "REACTOR_THREADPOOL_MAXSIZE": 100,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
