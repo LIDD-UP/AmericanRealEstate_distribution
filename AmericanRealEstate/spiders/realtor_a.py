@@ -63,7 +63,7 @@ class RealtorASpider(RedisSpider):
         # "RETRY_HTTP_CODES": [500, 502, 503, 504, 400, 408]
 
         # "LOG_FILE": "realtor_log.txt",
-        "LOG_LEVEL": 'DEBUG',
+        "LOG_LEVEL": 'ERROR',
         'REDIS_HOST': '138.197.143.39',
         'REDIS_PORT': 6379,
 
