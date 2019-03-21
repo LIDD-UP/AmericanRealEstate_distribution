@@ -8,6 +8,7 @@
 import json
 import os
 import requests
+import threading
 
 from AmericanRealEstate.items import RealtorListPageJsonItem, RealtorDetailPageJsonItem
 from crawl_tools.get_sql_con import get_sql_con
@@ -66,39 +67,54 @@ class RealtorListPageMysqlsqlPipeline(object):
 
 class RealtorListStoredByServerPipeline(object):
     house_list = []
+    list_session = requests.session()
+
+    def post_data_to_server(self, data):
+        post_data = {
+            "data": data
+        }
+        result = self.list_session.post(url=realtor_list_post_interface_url, json=json.dumps(post_data))
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
             self.house_list.append(json.loads(item['jsonData']))
             if len(self.house_list) >= 3:
-                print('数据显示',self.house_list)
-                post_data = {
-                    "data": self.house_list
-                }
-                result = requests.post(url=realtor_list_post_interface_url, json=json.dumps(post_data))
-                print('发送数据结果{}'.format(result))
+                print('list json 数据显示', self.house_list)
+                # post_data_thread = threading.Thread(target=self.post_data_to_server(data=self.house_list))
+                # post_data_thread.setDaemon(True)
+                # post_data_thread.start()
+                self.post_data_to_server(self.house_list)
 
+                print("list 数据发送到服务器成功")
                 del self.house_list[:]
         return item
 
 
 class RealtorDetailStoredByServerPipeline(object):
     house_list = []
+    # detail_session = requests.session()
+
+    def post_data_to_server(self,data):
+
+        post_data = {
+            "data": data
+        }
+        result = requests.post(url=realtor_detail_post_interface_url, json=json.dumps(post_data))
 
     def process_item(self, item, spider):
-        if isinstance(item,RealtorDetailPageJsonItem):
+        if isinstance(item, RealtorDetailPageJsonItem):
             detial_format_data = {
                 "detailJson": json.loads(item['detailJson']),
                 "propertyId": int(item['propertyId'])
             }
             self.house_list.append(detial_format_data)
             if len(self.house_list) >= 3:
-                print('数据显示',self.house_list)
-                post_data = {
-                    "data": self.house_list
-                }
-                result = requests.post(url=realtor_detail_post_interface_url, json=json.dumps(post_data))
-                print('发送数据结果{}'.format(result))
+                print('数据显示', self.house_list)
+                post_data_thread = threading.Thread(
+                    target=self.post_data_to_server(data=self.house_list))
+                post_data_thread.setDaemon(True)
+                post_data_thread.start()
+                print("detail 数据发送到服务器成功")
 
                 del self.house_list[:]
         return item

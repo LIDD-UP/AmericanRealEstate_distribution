@@ -28,7 +28,7 @@ class RealtorASpider(RedisSpider):
         "ITEM_PIPELINES": {
             'scrapy_redis.pipelines.RedisPipeline': 300,
             # 'AmericanRealEstate.pipelines.RealtordetailPageMysqlPipeline': 301,
-            'AmericanRealEstate.pipelines.RealtorDetailStoredByServerPipeline':302,
+            'AmericanRealEstate.pipelines.RealtorDetailStoredByServerPipeline': 302,
 
 
         },
@@ -53,18 +53,20 @@ class RealtorASpider(RedisSpider):
         },
         "COOKIES_ENABLED": False,
         "REDIRECT_ENABLED": False,
-        "CONCURRENT_REQUESTS" : 10,
+        "CONCURRENT_REQUESTS": 10,
         "REFERER_ENABLED": False,
         "RETRY_ENABLED": False,
-        "REACTOR_THREADPOOL_MAXSIZE":100,
-        "CONCURRENT_REQUESTS_PER_DOMAIN" : 10,
+        "REACTOR_THREADPOOL_MAXSIZE": 100,
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         # "CONCURRENT_REQUESTS_PER_IP" : 100,
 
         # "RETRY_HTTP_CODES": [500, 502, 503, 504, 400, 408]
 
         # "LOG_FILE": "realtor_log.txt",
         "LOG_LEVEL": 'ERROR',
-        'REDIS_HOST': '138.197.143.39',
+        # 'REDIS_HOST': '138.197.143.39',
+        # 'REDIS_HOST': '192.168.0.65',
+        'REDIS_HOST': '127.0.0.1',
         'REDIS_PORT': 6379,
 
         # 指定 redis链接密码
