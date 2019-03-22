@@ -67,22 +67,19 @@ class RealtorListPageMysqlsqlPipeline(object):
 
 class RealtorListStoredByServerPipeline(object):
     house_list = []
-    list_session = requests.session()
+    # list_session = requests.session()
 
     def post_data_to_server(self, data):
         post_data = {
             "data": data
         }
-        result = self.list_session.post(url=realtor_list_post_interface_url, json=json.dumps(post_data))
+        result = requests.post(url=realtor_list_post_interface_url, json=json.dumps(post_data))
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
             self.house_list.append(json.loads(item['jsonData']))
-            if len(self.house_list) >= 400 or not spider.server.exists(spider.redis_key):
-                print('list json 数据显示', self.house_list)
-                # post_data_thread = threading.Thread(target=self.post_data_to_server(data=self.house_list))
-                # post_data_thread.setDaemon(True)
-                # post_data_thread.start()
+            if len(self.house_list) >= 3 or not spider.server.exists(spider.redis_key):
+                print('list 数据列表已经达到要求，开始发送数据到服务器')
                 self.post_data_to_server(self.house_list)
 
                 print("list 数据发送到服务器成功")
@@ -108,14 +105,10 @@ class RealtorDetailStoredByServerPipeline(object):
                 "propertyId": int(item['propertyId'])
             }
             self.house_list.append(detial_format_data)
-            if len(self.house_list) >= 400 or not spider.server.exists(spider.redis_key):
-                print('数据显示', self.house_list)
-                post_data_thread = threading.Thread(
-                    target=self.post_data_to_server(data=self.house_list))
-                post_data_thread.setDaemon(True)
-                post_data_thread.start()
+            if len(self.house_list) >= 3 or not spider.server.exists(spider.redis_key):
+                print('详情数据列表已经满足要求开始发送数据到服务器')
+                self.post_data_to_server(self.house_list)
                 print("detail 数据发送到服务器成功")
-
                 del self.house_list[:]
         return item
 
