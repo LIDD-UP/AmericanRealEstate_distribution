@@ -64,15 +64,18 @@ class RealtorASpider(RedisSpider):
 
         # "LOG_FILE": "realtor_log.txt",
         "LOG_LEVEL": 'ERROR',
-        # 'REDIS_HOST': '138.197.143.39',
+        'REDIS_HOST': '138.197.143.39',
         # 'REDIS_HOST': '192.168.0.65',
-        'REDIS_HOST': '127.0.0.1',
+        # 'REDIS_HOST': '127.0.0.1',
         'REDIS_PORT': 6379,
 
         # 指定 redis链接密码
-        # 'REDIS_PARAMS': {
-        #     'password': '123456',
-        # },
+        'REDIS_PARAMS': {
+            # 'password': '123456',
+            'socket_timeout': 30,
+            'socket_connect_timeout':30,
+            'retry_on_timeout':True,
+        },
         # redis 设置：
         # Enables scheduling storing requests queue in redis.
         "SCHEDULER": "scrapy_redis.scheduler.Scheduler",
