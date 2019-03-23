@@ -45,8 +45,8 @@ class RealtorAppListPageSpider(RedisSpider):
         "CONCURRENT_REQUESTS":  15,
 
         # "REDIS_HOST": '127.0.0.1',
-        # "REDIS_HOST": '138.197.143.39',
-        "REDIS_HOST": '106.12.196.86',
+        "REDIS_HOST": '138.197.143.39',
+        # "REDIS_HOST": '106.12.196.86',
         # "REDIS_HOST": '192.168.0.65',
         'REDIS_PORT': 6379,
         "REACTOR_THREADPOOL_MAXSIZE": 100,
@@ -57,8 +57,8 @@ class RealtorAppListPageSpider(RedisSpider):
         # 指定 redis链接密码
         'REDIS_PARAMS': {
             # 'password': '123456',
-            'socket_timeout':30,
-            'socket_connect_timeout':30,
+            'socket_timeout': 60,
+            'socket_connect_timeout':60,
             'retry_on_timeout':True,
         },
         # redis 设置：
