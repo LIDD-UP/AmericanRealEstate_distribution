@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import datetime
-
+import time
 import scrapy
 from urllib.parse import urljoin
 from scrapy_redis.spiders import RedisSpider
@@ -23,6 +23,7 @@ class RealtorASpider(RedisSpider):
         true_scrapy_start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         true_scrapy_start_time = datetime.datetime.strptime(true_scrapy_start_time ,'%Y-%m-%d %H:%M:%S')
         self.scrapy_start_time = true_scrapy_start_time
+        # self.get_search_criteria_time = time.time()
 
     custom_settings = {
         "ITEM_PIPELINES": {
@@ -68,7 +69,8 @@ class RealtorASpider(RedisSpider):
 
         # "LOG_FILE": "realtor_log.txt",
         "LOG_LEVEL": 'ERROR',
-        'REDIS_HOST': '138.197.143.39',
+        # 'REDIS_HOST': '138.197.143.39',
+        'REDIS_HOST': '106.12.196.106',
         # 'REDIS_HOST': '106.12.196.86',
         # 'REDIS_HOST': '192.168.0.65',
         # 'REDIS_HOST': '127.0.0.1',

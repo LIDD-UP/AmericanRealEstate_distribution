@@ -9,6 +9,7 @@ import json
 import os
 import requests
 import threading
+import time
 
 from AmericanRealEstate.items import RealtorListPageJsonItem, RealtorDetailPageJsonItem
 from crawl_tools.get_sql_con import get_sql_con
@@ -78,10 +79,11 @@ class RealtorListStoredByServerPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
             self.house_list.append(json.loads(item['jsonData']))
-            if len(self.house_list) >= 50 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 100 or not spider.server.exists(spider.redis_key):
                 print('list 数据列表已经达到要求，开始发送数据到服务器')
+                time_now = time.time()
                 self.post_data_to_server(self.house_list)
-
+                print("发送数据消耗时间：{}".format(time.time() - time_now))
                 print("list 数据发送到服务器成功")
                 del self.house_list[:]
         return item
@@ -105,9 +107,11 @@ class RealtorDetailStoredByServerPipeline(object):
                 "propertyId": int(item['propertyId'])
             }
             self.house_list.append(detial_format_data)
-            if len(self.house_list) >= 50 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 100 or not spider.server.exists(spider.redis_key):
                 print('详情数据列表已经满足要求开始发送数据到服务器')
+                time_now = time.time()
                 self.post_data_to_server(self.house_list)
+                print("发送数据消耗时间：{}".format(time.time()-time_now))
                 print("detail 数据发送到服务器成功")
                 del self.house_list[:]
         return item
