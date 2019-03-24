@@ -79,7 +79,7 @@ class RealtorListStoredByServerPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
             self.house_list.append(json.loads(item['jsonData']))
-            if len(self.house_list) >= 100 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 20 or not spider.server.exists(spider.redis_key):
                 print('list 数据列表已经达到要求，开始发送数据到服务器')
                 time_now = time.time()
                 self.post_data_to_server(self.house_list)
