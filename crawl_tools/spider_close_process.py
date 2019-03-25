@@ -220,7 +220,6 @@ class SpiderCloseProcess(object):
                                     # password='123456'
                                     )
         redis_pool = redis.Redis(connection_pool=pool)
-        redis_pool.flushdb()
         cursor = conn.cursor()
         sql_string = '''
             SELECT

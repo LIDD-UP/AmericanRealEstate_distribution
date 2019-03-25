@@ -61,8 +61,8 @@ class RealtorListPageMysqlSpiderMiddleware(object):
 
     def spider_closed(self, spider):
         # os.system("python {}".format(spider_close_process_shell_path))
-        requests.post(url=realtor_list_spider_close_process_url,data="list_spider_close")
-        requests.post(url=realtor_detial_spider_start_url, data="start_detail_spider")
+        # requests.post(url=realtor_list_spider_close_process_url,data="list_spider_close")
+        # requests.post(url=realtor_detial_spider_start_url, data="start_detail_spider")
         print('整个过程完毕')
 
 

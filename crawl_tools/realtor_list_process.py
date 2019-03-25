@@ -17,7 +17,6 @@ class RealtorListProcess(object):
                                     # password='123456'
                                     )
         redis_pool = redis.Redis(connection_pool=pool)
-        redis_pool.flushdb()
         for url in realtor_list_search_criteria:
             print(url)
             redis_pool.lpush('realtor:list_url', url)
@@ -45,7 +44,6 @@ class RealtorListProcess(object):
         conn.commit()
         conn.close()
         print('清空realtor_list_page_json 表和清空清空realtor_list_page_json_splite 表成功')
-
 
 
 if __name__ == "__main__":

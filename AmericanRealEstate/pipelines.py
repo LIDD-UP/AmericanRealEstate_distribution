@@ -16,7 +16,7 @@ from crawl_tools.get_sql_con import get_sql_con
 from crawl_tools.test_file import post_url
 from AmericanRealEstate.settings import realtor_list_post_interface_url, realtor_detail_post_interface_url
 from AmericanRealEstate.settings import realtor_list_pipeline_process_path, realtor_detial_pipeline_process_path, spider_close_process_shell_path
-
+from AmericanRealEstate.settings import realtor_get_list_search_criteria_url,realtor_get_detail_search_criteria_url
 
 class RealtordetailPageMysqlPipeline(object):
     def __init__(self):
@@ -78,8 +78,11 @@ class RealtorListStoredByServerPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
+            if not spider.server.exists(spider.redis_key):
+                req = requests.get(url=realtor_get_list_search_criteria_url)
+                print(req.text)
             self.house_list.append(json.loads(item['jsonData']))
-            if len(self.house_list) >= 20 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 5 or not spider.server.exists(spider.redis_key):
                 print('list 数据列表已经达到要求，开始发送数据到服务器')
                 time_now = time.time()
                 self.post_data_to_server(self.house_list)
@@ -102,12 +105,15 @@ class RealtorDetailStoredByServerPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorDetailPageJsonItem):
+            if not spider.server.exists(spider.redis_key):
+                req = requests.get(url=realtor_get_list_search_criteria_url)
+                print(req.text)
             detial_format_data = {
                 "detailJson": json.loads(item['detailJson']),
                 "propertyId": int(item['propertyId'])
             }
             self.house_list.append(detial_format_data)
-            if len(self.house_list) >= 100 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 50 or not spider.server.exists(spider.redis_key):
                 print('详情数据列表已经满足要求开始发送数据到服务器')
                 time_now = time.time()
                 self.post_data_to_server(self.house_list)

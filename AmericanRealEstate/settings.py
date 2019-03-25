@@ -123,8 +123,8 @@ MYSQL_PASSWORD = '123456'
 
 # 搜索条件设置
 import pandas as pd
-root_path = r'F:\PycharmProject\AmericanRealEstate'
-# root_path = r'/data/project/AmericanRealEstate'
+# root_path = r'F:\PycharmProject\AmericanRealEstate'
+root_path = r'/data/project/AmericanRealEstate'
 
 realtor_list_search_criteria = list(set(list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria.csv')['countyStateJoin'])))
 spider_close_process_shell_path = root_path + '/crawl_tools/spider_close_process.py'
@@ -136,6 +136,7 @@ realtor_detail_spider_path = root_path + r'/realtor_a_main.py'
 # sql url address
 # domain = 'http://127.0.0.1:5000'
 domain = 'http://127.0.0.1:8000/spider_server'
+# domain = 'http://138.197.143.39:8000/spider_server'
 # domain = 'http://138.197.143.39:5000'
 # domain = 'http://192.168.0.65:5000'
 # domain = 'http://106.12.196.86:5000'
@@ -145,6 +146,8 @@ realtor_detail_post_interface_url = domain + '/process_detail_page_json/'
 realtor_detial_spider_start_url = domain + '/start_detail_spider/'
 realtor_list_spider_close_process_url = domain + '/spider_close_process/'
 
+realtor_get_list_search_criteria_url = domain + '/get_list_search_criteria/'
+realtor_get_detail_search_criteria_url = domain + '/get_detail_search_criteria/'
 
 
 # realtor domain url

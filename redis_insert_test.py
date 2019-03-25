@@ -12,7 +12,6 @@ def get_detail_url():
                                 # password='123456'
                                 )
     redis_pool = redis.Redis(connection_pool=pool)
-    redis_pool.flushdb()
     conn = get_sql_con()
     cursor = conn.cursor()
     sql_string = '''
@@ -39,4 +38,3 @@ get_detail_url()
 #                             # password='123456'
 #                             )
 # redis_pool = redis.Redis(connection_pool=pool)
-# redis_pool.flushdb()

@@ -28,7 +28,7 @@ class RealtorAppListPageSpider(RedisSpider):
             # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 545
         },
         'EXTENSIONS': {
-            'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
+            # 'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
         },
         "DEFAULT_REQUEST_HEADERS": {
             "Cache-Control": "public",
@@ -44,9 +44,9 @@ class RealtorAppListPageSpider(RedisSpider):
         "RETRY_ENABLED": False,
         "CONCURRENT_REQUESTS":  15,
 
-        "REDIS_HOST": '127.0.0.1',
+        # "REDIS_HOST": '127.0.0.1',
         # "REDIS_HOST": '138.197.143.39',
-        # 'REDIS_HOST': '106.12.196.106',
+        'REDIS_HOST': '106.12.196.106',
         # "REDIS_HOST": '106.12.196.86',
         # "REDIS_HOST": '192.168.0.65',
         'REDIS_PORT': 6379,
@@ -60,7 +60,7 @@ class RealtorAppListPageSpider(RedisSpider):
             # 'password': '123456',
             'socket_timeout': 60,
             'socket_connect_timeout':60,
-            'retry_on_timeout':True,
+            'retry_on_timeout': True,
         },
         # redis 设置：
         # Enables scheduling storing requests queue in redis.
