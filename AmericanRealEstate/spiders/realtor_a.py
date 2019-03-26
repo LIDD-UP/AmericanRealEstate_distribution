@@ -9,7 +9,6 @@ import pandas as pd
 import ast
 
 from AmericanRealEstate.items import RealtorDetailPageJsonItem
-# from AmericanRealEstate.settings import realtor_search_criteria, realtor_domain_url
 
 
 class RealtorASpider(RedisSpider):
@@ -41,7 +40,7 @@ class RealtorASpider(RedisSpider):
             # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 544
         },
         'EXTENSIONS':{
-           # 'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
+           'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
         },
 
         "DEFAULT_REQUEST_HEADERS": {

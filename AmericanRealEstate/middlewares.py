@@ -12,7 +12,7 @@ import datetime
 import re
 from scrapy import signals
 import os
-from AmericanRealEstate.settings import spider_close_process_shell_path
+# from AmericanRealEstate.settings import spider_close_process_shell_path
 from AmericanRealEstate.settings import realtor_list_spider_close_process_url,realtor_detial_spider_start_url
 
 
@@ -61,8 +61,8 @@ class RealtorListPageMysqlSpiderMiddleware(object):
 
     def spider_closed(self, spider):
         # os.system("python {}".format(spider_close_process_shell_path))
-        # requests.post(url=realtor_list_spider_close_process_url,data="list_spider_close")
-        # requests.post(url=realtor_detial_spider_start_url, data="start_detail_spider")
+        requests.get(url=realtor_list_spider_close_process_url)
+        requests.get(url=realtor_detial_spider_start_url)
         print('整个过程完毕')
 
 
