@@ -152,6 +152,7 @@ realtor_get_list_search_criteria_url = domain + '/get_list_search_criteria/'
 realtor_get_detail_search_criteria_url = domain + '/get_detail_search_criteria/'
 
 
+
 # realtor domain url
 realtor_domain_url = 'https://www.realtor.com/'
 
