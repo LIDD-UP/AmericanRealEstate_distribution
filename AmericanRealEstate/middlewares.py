@@ -13,7 +13,8 @@ import re
 from scrapy import signals
 import os
 # from AmericanRealEstate.settings import spider_close_process_shell_path
-from AmericanRealEstate.settings import realtor_list_spider_close_process_url,realtor_detial_spider_start_url
+from AmericanRealEstate.settings import realtor_list_spider_close_process_url
+from AmericanRealEstate.settings import realtor_detail_spider_close_process_url
 
 
 class RealtorListPageMiddleware(object):
@@ -46,7 +47,7 @@ class RealtorListPageMiddleware(object):
         return response
 
 
-class RealtorListPageMysqlSpiderMiddleware(object):
+class RealtorListFinishSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -60,44 +61,27 @@ class RealtorListPageMysqlSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        # os.system("python {}".format(spider_close_process_shell_path))
-        # requests.get(url=realtor_list_spider_close_process_url)
-        # requests.get(url=realtor_detial_spider_start_url)
-        print('整个过程完毕')
+        requests.get(url=realtor_list_spider_close_process_url)
+        print('list spider 整个过程完毕')
 
 
-class RealtorCloseSpiderWhenRedisNullSpiderMiddleware(object):
-    def __init__(self, idle_number, crawler):
-        self.crawler = crawler
-        self.idle_number = idle_number
-        self.idle_list = []
-        self.idle_count = 0
+class RealtorDetailFinishSpiderMiddleware(object):
+    # Not all methods need to be defined. If a method is not defined,
+    # scrapy acts as if the spider middleware does not modify the
+    # passed objects.
 
     @classmethod
     def from_crawler(cls, crawler):
+        # This method is used by Scrapy to create your spiders.
+        s = cls()
+        crawler.signals.connect(s.spider_closed, signal=signals.spider_closed)
 
-        idle_number = crawler.settings.getint('IDLE_NUMBER', 360)
-
-        ext = cls(idle_number, crawler)
-
-        crawler.signals.connect(ext.spider_closed, signal=signals.spider_closed)
-        crawler.signals.connect(ext.spider_idle, signal=signals.spider_idle)
-
-        return ext
-
-    def spider_idle(self, spider):
-        self.idle_count += 1
-        self.idle_list.append(time.time())
-        idle_list_len = len(self.idle_list)
-
-        if idle_list_len > 2 and self.idle_list[-1] - self.idle_list[-2] > 6:
-            self.idle_list = [self.idle_list[-1]]
-
-        elif idle_list_len > self.idle_number:
-            self.crawler.engine.close_spider(spider, 'closespider_pagecount')
+        return s
 
     def spider_closed(self, spider):
-        print("redis queues has no search criteria and close spider")
+        requests.get(url=realtor_detail_spider_close_process_url)
+        print('detail spider 整个过程完毕')
+
 
 
 class RealtorDetailPageAMiddleware(object):

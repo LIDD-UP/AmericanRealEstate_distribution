@@ -4,43 +4,38 @@ import datetime
 import time
 import scrapy
 from urllib.parse import urljoin
-from scrapy_redis.spiders import RedisSpider
 import pandas as pd
 import ast
 
 from AmericanRealEstate.items import RealtorDetailPageJsonItem
+from AmericanRealEstate.settings import realtor_detial_search_criteria
 
 
-class RealtorASpider(RedisSpider):
+class RealtorASpider(scrapy.Spider):
     name = 'realtor_a'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
-    redis_key = "realtor:property_id"
+    start_urls = [x for x in realtor_detial_search_criteria]
 
     def __init__(self,
                  *args, **kwargs):
         super(RealtorASpider, self).__init__(*args, **kwargs)
         true_scrapy_start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        true_scrapy_start_time = datetime.datetime.strptime(true_scrapy_start_time ,'%Y-%m-%d %H:%M:%S')
+        true_scrapy_start_time = datetime.datetime.strptime(true_scrapy_start_time, '%Y-%m-%d %H:%M:%S')
         self.scrapy_start_time = true_scrapy_start_time
-        # self.get_search_criteria_time = time.time()
+
 
     custom_settings = {
         "ITEM_PIPELINES": {
-            'scrapy_redis.pipelines.RedisPipeline': 300,
             # 'AmericanRealEstate.pipelines.RealtordetailPageMysqlPipeline': 301,
             'AmericanRealEstate.pipelines.RealtorDetailStoredByServerPipeline': 302,
 
 
         },
         "DOWNLOADER_MIDDLEWARES": {
-            'AmericanRealEstate.middlewares.RealtorDetailPageAProcessUrlMiddleware': 544,
             'AmericanRealEstate.middlewares.RealtorDetailPageAMiddleware': 545,
         },
         "SPIDER_MIDDLEWARES": {
-            # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 544
-        },
-        'EXTENSIONS':{
-           # 'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
+            'AmericanRealEstate.middlewares.RealtorDetailFinishSpiderMiddleware': 544,
         },
 
         "DEFAULT_REQUEST_HEADERS": {
@@ -60,34 +55,10 @@ class RealtorASpider(RedisSpider):
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         # "CONCURRENT_REQUESTS_PER_IP" : 100,
 
-
-
-
-
         # "RETRY_HTTP_CODES": [500, 502, 503, 504, 400, 408]
 
         # "LOG_FILE": "realtor_log.txt",
         "LOG_LEVEL": 'ERROR',
-        # 'REDIS_HOST': '138.197.143.39',
-        'REDIS_HOST': '106.12.196.106',
-        # 'REDIS_HOST': '106.12.196.86',
-        # 'REDIS_HOST': '192.168.0.65',
-        # 'REDIS_HOST': '127.0.0.1',
-        'REDIS_PORT': 6379,
-
-        # 指定 redis链接密码
-        'REDIS_PARAMS': {
-            # 'password': '123456',
-            'socket_timeout': 60,
-            'socket_connect_timeout': 60,
-            'retry_on_timeout': True,
-        },
-        # redis 设置：
-        # Enables scheduling storing requests queue in redis.
-        "SCHEDULER": "scrapy_redis.scheduler.Scheduler",
-
-        # Ensure all spiders share same duplicates filter through redis.
-        "DUPEFILTER_CLASS": "scrapy_redis.dupefilter.RFPDupeFilter",
     }
 
     def parse(self,response):

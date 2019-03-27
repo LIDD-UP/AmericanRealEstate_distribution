@@ -3,16 +3,16 @@ import json
 import re
 
 import scrapy
-from scrapy_redis.spiders import RedisSpider
 
 
 from AmericanRealEstate.items import RealtorListPageJsonItem
+from AmericanRealEstate.settings import realtor_list_search_criteria
 
 
-class RealtorAppListPageSpider(RedisSpider):
+class RealtorAppListPageSpider(scrapy.Spider):
     name = 'realtor_app_list_page'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
-    redis_key = "realtor:list_url"
+    start_urls = [x for x in realtor_list_search_criteria]
 
     custom_settings = {
         "ITEM_PIPELINES": {
@@ -24,12 +24,9 @@ class RealtorAppListPageSpider(RedisSpider):
 
         },
         "SPIDER_MIDDLEWARES": {
-            'AmericanRealEstate.middlewares.RealtorListPageMysqlSpiderMiddleware':544,
-            # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 545
+            'AmericanRealEstate.middlewares.RealtorListFinishSpiderMiddleware':544,
         },
-        'EXTENSIONS': {
-            # 'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
-        },
+
         "DEFAULT_REQUEST_HEADERS": {
             "Cache-Control": "public",
             "Mapi-Bucket": "for_sale_v2:on,for_rent_ldp_v2:on,for_rent_srp_v2:on,recently_sold_ldp_v2:on,recently_sold_srp_v2:on,not_for_sale_ldp_v2:on,not_for_sale_srp_v2:on,search_reranking_srch_rerank1:variant1",
@@ -44,30 +41,12 @@ class RealtorAppListPageSpider(RedisSpider):
         "RETRY_ENABLED": False,
         "CONCURRENT_REQUESTS":  15,
 
-        # "REDIS_HOST": '127.0.0.1',
-        # "REDIS_HOST": '138.197.143.39',
-        'REDIS_HOST': '106.12.196.106',
-        # "REDIS_HOST": '106.12.196.86',
-        # "REDIS_HOST": '192.168.0.65',
-        'REDIS_PORT': 6379,
+
         "REACTOR_THREADPOOL_MAXSIZE": 100,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         # "LOG_FILE": "realtor_log.txt",
-        "LOG_LEVEL": 'ERROR',
+        "LOG_LEVEL": 'INFO',
 
-        # 指定 redis链接密码
-        'REDIS_PARAMS': {
-            # 'password': '123456',
-            'socket_timeout': 60,
-            'socket_connect_timeout':60,
-            'retry_on_timeout': True,
-        },
-        # redis 设置：
-        # Enables scheduling storing requests queue in redis.
-        "SCHEDULER": "scrapy_redis.scheduler.Scheduler",
-
-        # Ensure all spiders share same duplicates filter through redis.
-        "DUPEFILTER_CLASS": "scrapy_redis.dupefilter.RFPDupeFilter",
     }
 
     def parse(self, response):
