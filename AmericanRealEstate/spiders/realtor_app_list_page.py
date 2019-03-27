@@ -45,7 +45,7 @@ class RealtorAppListPageSpider(scrapy.Spider):
         "REACTOR_THREADPOOL_MAXSIZE": 100,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         # "LOG_FILE": "realtor_log.txt",
-        "LOG_LEVEL": 'INFO',
+        "LOG_LEVEL": 'ERROR',
 
     }
 

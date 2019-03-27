@@ -56,6 +56,7 @@ class RealtorDetailStoredByServerPipeline(object):
                 "detailJson": json.loads(item['detailJson']),
                 "propertyId": int(item['propertyId'])
             }
+
             self.house_list.append(detial_format_data)
             if len(self.house_list) >= 50 or len(spider.start_urls) == 0:
                 print('详情数据列表已经满足要求开始发送数据到服务器')
