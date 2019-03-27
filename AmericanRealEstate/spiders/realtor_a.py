@@ -8,13 +8,13 @@ import pandas as pd
 import ast
 
 from AmericanRealEstate.items import RealtorDetailPageJsonItem
-from AmericanRealEstate.settings import realtor_detial_search_criteria
+from AmericanRealEstate.settings import realtor_detail_search_criteria
 
 
 class RealtorASpider(scrapy.Spider):
     name = 'realtor_a'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
-    start_urls = [x for x in realtor_detial_search_criteria]
+    start_urls = [x for x in realtor_detail_search_criteria]
 
     def __init__(self,
                  *args, **kwargs):
@@ -67,3 +67,5 @@ class RealtorASpider(scrapy.Spider):
         realtor_detail_pageJson_item['detailJson'] = response.text
         realtor_detail_pageJson_item['propertyId'] = re.findall(r'api/v1/properties/(\d.*)\?client_id=',response.url)[0]
         yield realtor_detail_pageJson_item
+
+

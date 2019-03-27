@@ -127,8 +127,8 @@ root_path = r'F:\PycharmProject\AmericanRealEstate'
 # root_path = r'/data/project/AmericanRealEstate'
 
 # 本地python文件测试
-realtor_list_search_criteria = list(set(list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria_one.csv.csv')['list_criteria'])))
-realtor_detial_search_criteria = list(set(list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_detail_page_search_criteria.csv')['detail_criteria'])))
+realtor_list_search_criteria = list(set(list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria_test.csv')['list_criteria'])))
+realtor_detail_search_criteria = list(set(list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_detail_page_search_criteria.csv')['detail_criteria'])))
 list_search_criteria_stored_path = root_path + '/crawl_tools'
 
 

@@ -28,7 +28,7 @@ class RealtorListStoredByServerPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
             self.house_list.append(json.loads(item['jsonData']))
-            if len(self.house_list) >= 5 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 5 or len(spider.start_urls) == 0:
                 print('list 数据列表已经达到要求，开始发送数据到服务器')
                 time_now = time.time()
                 self.post_data_to_server(self.house_list)
@@ -57,7 +57,7 @@ class RealtorDetailStoredByServerPipeline(object):
                 "propertyId": int(item['propertyId'])
             }
             self.house_list.append(detial_format_data)
-            if len(self.house_list) >= 50 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 50 or len(spider.start_urls) == 0:
                 print('详情数据列表已经满足要求开始发送数据到服务器')
                 time_now = time.time()
                 self.post_data_to_server(self.house_list)
