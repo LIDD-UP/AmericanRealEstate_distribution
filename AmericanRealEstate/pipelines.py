@@ -79,25 +79,24 @@ class RealtorListStoredByServerPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
-
-            # 爬虫主动请求的方式;可能会导致数据没有抓取完全就导致爬虫退出
-            # if not spider.server.exists(spider.redis_key):
-            #     req = requests.get(url=realtor_get_list_search_criteria_url)
-            #     print(req.text)
-            #     if req.text == 'list页搜索条件已经空了':
-            #         # list搜索条件空，启动list结束的数据处理操作；
-            #         requests.get(url=realtor_list_spider_close_process_url)
-            #         # 数据处理操作完成之后进行开启详情页爬虫
-            #         requests.get(url=realtor_detial_spider_start_url)
-
             self.house_list.append(json.loads(item['jsonData']))
-            if len(self.house_list) >= 5 or not spider.server.exists(spider.redis_key):
+            if len(self.house_list) >= 1 or not spider.server.exists(spider.redis_key):
                 print('list 数据列表已经达到要求，开始发送数据到服务器')
                 time_now = time.time()
                 self.post_data_to_server(self.house_list)
                 print("发送数据消耗时间：{}".format(time.time() - time_now))
                 print("list 数据发送到服务器成功")
                 del self.house_list[:]
+
+            # 爬虫主动请求的方式;可能会导致数据没有抓取完全就导致爬虫退出
+            if not spider.server.exists(spider.redis_key):
+                req = requests.get(url=realtor_get_list_search_criteria_url)
+                print(req.text)
+                if req.text == 'list页搜索条件已经空了':
+                    # list搜索条件空，启动list结束的数据处理操作；
+                    requests.get(url=realtor_list_spider_close_process_url)
+                    # 数据处理操作完成之后进行开启详情页爬虫
+                    requests.get(url=realtor_detial_spider_start_url)
         return item
 
 
@@ -115,13 +114,13 @@ class RealtorDetailStoredByServerPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, RealtorDetailPageJsonItem):
 
-            # # 爬虫端主动请求需要爬取的url
-            # if not spider.server.exists(spider.redis_key):
-            #     req = requests.get(url=realtor_get_detail_search_criteria_url)
-            #     print(req.text)
-            #     if req.text=='detail搜索条件已经空了':
-            #         print('time to close detail spider')
-            #         # 发送信号关闭爬虫
+            # 爬虫端主动请求需要爬取的url
+            if not spider.server.exists(spider.redis_key):
+                req = requests.get(url=realtor_get_detail_search_criteria_url)
+                print(req.text)
+                if req.text=='detail搜索条件已经空了':
+                    print('time to close detail spider')
+                    # 发送信号关闭爬虫
 
             detial_format_data = {
                 "detailJson": json.loads(item['detailJson']),

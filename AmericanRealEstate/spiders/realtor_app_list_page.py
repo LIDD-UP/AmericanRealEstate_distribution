@@ -28,7 +28,7 @@ class RealtorAppListPageSpider(RedisSpider):
             # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 545
         },
         'EXTENSIONS': {
-            'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
+            # 'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
         },
         "DEFAULT_REQUEST_HEADERS": {
             "Cache-Control": "public",

@@ -40,7 +40,7 @@ class RealtorASpider(RedisSpider):
             # 'AmericanRealEstate.middlewares.RealtorCloseSpiderWhenRedisNullSpiderMiddleware': 544
         },
         'EXTENSIONS':{
-           'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
+           # 'AmericanRealEstate.extensions.RedisSpiderSmartIdleClosedExensions': 500,
         },
 
         "DEFAULT_REQUEST_HEADERS": {
