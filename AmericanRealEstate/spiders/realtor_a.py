@@ -15,6 +15,8 @@ class RealtorASpider(scrapy.Spider):
     name = 'realtor_a'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
     start_urls = [x for x in realtor_detail_search_criteria]
+    len_criteria = len(start_urls)
+    len_crawled = 0
 
     def __init__(self,
                  *args, **kwargs):

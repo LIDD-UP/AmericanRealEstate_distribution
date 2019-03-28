@@ -1,4 +1,4 @@
-countyStateJoin
+list_criteria
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Autauga&state_code=AL&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Baldwin&state_code=AL&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Barbour&state_code=AL&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid

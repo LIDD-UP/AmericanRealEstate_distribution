@@ -13,7 +13,8 @@ class RealtorAppListPageSpider(scrapy.Spider):
     name = 'realtor_app_list_page'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
     start_urls = [x for x in realtor_list_search_criteria]
-
+    # last_item = False
+    # last_url = 'https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Woodford&state_code=KY&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid'
     custom_settings = {
         "ITEM_PIPELINES": {
             # 'AmericanRealEstate.pipelines.RealtorListPageMysqlsqlPipeline': 301,
@@ -60,10 +61,21 @@ class RealtorAppListPageSpider(scrapy.Spider):
         offset = int(re.findall(r'offset=(.*)&limit', res_url)[0])
         county_name = re.findall(r'county=(.*)&state_code', res_url)[0]
         state_code = re.findall(r'state_code=(.*)&sort=relevance', res_url)[0]
+
+        # if len(re.findall(r'county=Woodford&state_code=KY', self.last_url)) != 0 and len(json_res_listings) == 0:
+        #     RealtorAppListPageSpider.last_item = True
+        #     yield realtor_list_page_item
+
+
         if len(json_res_listings) != 0:
             yield realtor_list_page_item
             next_url = 'https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset={}&limit=200&county={}&state_code={}&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid'.format(offset+200,county_name,state_code)
             yield scrapy.Request(url=next_url,callback=self.parse)
+
+
+
+
+
 
 
 
