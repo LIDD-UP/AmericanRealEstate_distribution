@@ -15,9 +15,9 @@ class RealtorASpider(scrapy.Spider):
     name = 'realtor_a'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
     start_urls = [x for x in realtor_detail_search_criteria]
-    len_criteria = len(start_urls)
-    len_crawled = 0
-
+    last_url = start_urls[-1]
+    last_url_flag = re.findall(r'api/v1/properties/(\d.*)\?client_id=', last_url)[0]
+    last_item = False
     def __init__(self,
                  *args, **kwargs):
         super(RealtorASpider, self).__init__(*args, **kwargs)
@@ -52,7 +52,7 @@ class RealtorASpider(scrapy.Spider):
         "REDIRECT_ENABLED": False,
         "CONCURRENT_REQUESTS": 15,
         "REFERER_ENABLED": False,
-        "RETRY_ENABLED": False,
+        # "RETRY_ENABLED": False,
         "REACTOR_THREADPOOL_MAXSIZE": 100,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 10,
         # "CONCURRENT_REQUESTS_PER_IP" : 100,
@@ -67,7 +67,10 @@ class RealtorASpider(scrapy.Spider):
         # 接口的parse
         realtor_detail_pageJson_item = RealtorDetailPageJsonItem()
         realtor_detail_pageJson_item['detailJson'] = response.text
-        realtor_detail_pageJson_item['propertyId'] = re.findall(r'api/v1/properties/(\d.*)\?client_id=',response.url)[0]
+        present_property_id = re.findall(r'api/v1/properties/(\d.*)\?client_id=',response.url)[0]
+        realtor_detail_pageJson_item['propertyId'] = present_property_id
+        if present_property_id == RealtorASpider.last_url_flag:
+            RealtorASpider.last_item = True
         yield realtor_detail_pageJson_item
 
 

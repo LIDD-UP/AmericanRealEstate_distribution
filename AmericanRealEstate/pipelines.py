@@ -25,9 +25,9 @@ class RealtorListStoredByServerPipeline(object):
             "data": data
         }
         list_json_data = json.dumps(post_data)
-        print("list json data 没有去除空格的大小", len(list_json_data))
+        # print("list json data 没有去除空格的大小", len(list_json_data))
         list_json_data_strip = list_json_data.replace(' ', '')
-        print("list json data 去除空格的大小", len(list_json_data_strip))
+        # print("list json data 去除空格的大小", len(list_json_data_strip))
 
         # # 进行数据压缩
         # json_data_encode = list_json_data.encode()
@@ -38,25 +38,24 @@ class RealtorListStoredByServerPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
-            self.house_list.append(json.loads(item['jsonData']))
-            spider.len_crawled += 1
-            if len(self.house_list) >= 20:
-                print('list 数据列表已经达到要求，开始发送数据到服务器')
+
+            print("----------------是不是最后一个item：",spider.last_item)
+            RealtorListStoredByServerPipeline.house_list.append(json.loads(item['jsonData']))
+            if spider.last_item:
+                print("已经是最后一批数据了，发送最后一批数据")
                 time_now = time.time()
-                self.post_data_to_server(self.house_list)
+                self.post_data_to_server(RealtorListStoredByServerPipeline.house_list)
                 print("发送数据消耗时间：{}".format(time.time() - time_now))
                 print("list 数据发送到服务器成功")
-                del self.house_list[:]
+                del RealtorListStoredByServerPipeline.house_list[:]
 
-            # if spider.last_item:
-            #     print('list 数据列表已经达到要求，开始发送数据到服务器')
-            #     time_now = time.time()
-            #     self.post_data_to_server(self.house_list)
-            #     print("发送数据消耗时间：{}".format(time.time() - time_now))
-            #     print("list 数据发送到服务器成功")
-            #     del self.house_list[:]
-
-
+            if len(RealtorListStoredByServerPipeline.house_list) == 20:
+                print('list 数据列表已经达到要求，开始发送数据到服务器')
+                time_now = time.time()
+                self.post_data_to_server(RealtorListStoredByServerPipeline.house_list)
+                print("发送数据消耗时间：{}".format(time.time() - time_now))
+                print("list 数据发送到服务器成功")
+                del RealtorListStoredByServerPipeline.house_list[:]
         return item
 
 
@@ -70,9 +69,9 @@ class RealtorDetailStoredByServerPipeline(object):
             "data": data
         }
         detail_json_data = json.dumps(post_data)
-        print("list json data 没有去除空格的大小", len(detail_json_data))
+        # print("list json data 没有去除空格的大小", len(detail_json_data))
         detail_json_data_strip = detail_json_data.replace(' ', '')
-        print("list json data 去除空格的大小", len(detail_json_data_strip))
+        # print("list json data 去除空格的大小", len(detail_json_data_strip))
 
         # json_data_encode = detail_json_data.encode()
         # compress_data = zlib.compress(json_data_encode)
@@ -87,23 +86,25 @@ class RealtorDetailStoredByServerPipeline(object):
                 "propertyId": int(item['propertyId'])
             }
 
-            self.house_list.append(detial_format_data)
-            spider.len_crawled += 1
-            if len(self.house_list) >= 50:
+            RealtorDetailStoredByServerPipeline.house_list.append(detial_format_data)
+
+            print("--------------------最后一个item的状态", spider.last_item)
+
+            if spider.last_item:
+                print('发送最后一批数据')
+                time_now = time.time()
+                self.post_data_to_server(RealtorDetailStoredByServerPipeline.house_list)
+                print("发送数据消耗时间：{}".format(time.time() - time_now))
+                print("最后一批detail 数据发送到服务器成功")
+                del RealtorDetailStoredByServerPipeline.house_list[:]
+
+            if len(RealtorDetailStoredByServerPipeline.house_list) == 100:
                 print('详情数据列表已经满足要求开始发送数据到服务器')
                 time_now = time.time()
-                self.post_data_to_server(self.house_list)
+                self.post_data_to_server(RealtorDetailStoredByServerPipeline.house_list)
                 print("发送数据消耗时间：{}".format(time.time()-time_now))
                 print("detail 数据发送到服务器成功")
-                del self.house_list[:]
-
-            if spider.len_criteria == spider.len_crawled:
-                print('详情数据列表已经满足要求开始发送数据到服务器')
-                time_now = time.time()
-                self.post_data_to_server(self.house_list)
-                print("发送数据消耗时间：{}".format(time.time() - time_now))
-                print("detail 数据发送到服务器成功")
-                del self.house_list[:]
+                del RealtorDetailStoredByServerPipeline.house_list[:]
 
         return item
 

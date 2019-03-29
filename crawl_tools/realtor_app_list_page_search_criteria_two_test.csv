@@ -1,0 +1,3 @@
+list_criteria
+https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Benton&state_code=MO&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
+https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Marlboro&state_code=SC&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid

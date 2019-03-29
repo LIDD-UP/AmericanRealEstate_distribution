@@ -41,7 +41,7 @@ class RealtorListPageMiddleware(object):
             self.stop_signal += 1
             print(self.stop_signal)
 
-            if self.stop_signal > 100:
+            if self.stop_signal > 1000:
                 spider.crawler.engine.close_spider(spider, '爬虫已经被发现了')
 
         return response
@@ -61,7 +61,11 @@ class RealtorListFinishSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        requests.get(url=realtor_list_spider_close_process_url)
+        sleep_time = 60
+        print("沉睡时间{}s".format(sleep_time))
+        time.sleep(sleep_time)
+        req = requests.get(url=realtor_list_spider_close_process_url)
+        # print(req.text)
         print('list spider 整个过程完毕')
 
 
@@ -79,7 +83,9 @@ class RealtorDetailFinishSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        requests.get(url=realtor_detail_spider_close_process_url)
+        # time.sleep(600)
+        req = requests.get(url=realtor_detail_spider_close_process_url)
+        # print(req.text)
         print('detail spider 整个过程完毕')
 
 
@@ -111,7 +117,7 @@ class RealtorDetailPageAMiddleware(object):
             print('当前的status code：', response.status)
             # 设置暂停时间
             import time
-            time.sleep(300)
+            time.sleep(20)
             self.stop_signal += 1
             print(self.stop_signal)
 

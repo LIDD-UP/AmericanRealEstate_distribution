@@ -7,14 +7,16 @@ import scrapy
 
 from AmericanRealEstate.items import RealtorListPageJsonItem
 from AmericanRealEstate.settings import realtor_list_search_criteria
+# from AmericanRealEstate.settings import realtor_list_search_criteria_test as realtor_list_search_criteria
 
 
 class RealtorAppListPageSpider(scrapy.Spider):
     name = 'realtor_app_list_page'
     allowed_domains = ['mapi-ng.rdc.moveaws.com']
     start_urls = [x for x in realtor_list_search_criteria]
-    # last_item = False
-    # last_url = 'https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Woodford&state_code=KY&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid'
+    last_item = False
+    last_url = start_urls[-1]
+    last_url_flag = re.findall('offset=0&limit=200&(.*)&sort=relevance&schema=mapsearch&client_id=', last_url)[0]
     custom_settings = {
         "ITEM_PIPELINES": {
             # 'AmericanRealEstate.pipelines.RealtorListPageMysqlsqlPipeline': 301,
@@ -62,10 +64,19 @@ class RealtorAppListPageSpider(scrapy.Spider):
         county_name = re.findall(r'county=(.*)&state_code', res_url)[0]
         state_code = re.findall(r'state_code=(.*)&sort=relevance', res_url)[0]
 
-        # if len(re.findall(r'county=Woodford&state_code=KY', self.last_url)) != 0 and len(json_res_listings) == 0:
-        #     RealtorAppListPageSpider.last_item = True
-        #     yield realtor_list_page_item
+        present_url_flag = re.findall('limit=200&(.*)&sort=relevance&schema=mapsearch&client_id=', response.url)
+        # print(present_url_flag)
+        # print(RealtorAppListPageSpider.last_url_flag)
+        if len(present_url_flag) != 0:
+            present_url_flag = present_url_flag[0]
+        if len(present_url_flag) == 0:
+            present_url_flag = ''
 
+        if present_url_flag == RealtorAppListPageSpider.last_url_flag and len(json_res_listings) == 0:
+            print('已经是最后一个item了,提交item')
+
+            RealtorAppListPageSpider.last_item = True
+            yield realtor_list_page_item
 
         if len(json_res_listings) != 0:
             yield realtor_list_page_item
