@@ -41,7 +41,7 @@ class RealtorAppListPageSpider(scrapy.Spider):
         "COOKIES_ENABLED": False,
         "REDIRECT_ENABLED": False,
         "REFERER_ENABLED": False,
-        "RETRY_ENABLED": False,
+        # "RETRY_ENABLED": False,
         "CONCURRENT_REQUESTS":  15,
 
 
