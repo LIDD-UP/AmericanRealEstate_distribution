@@ -61,7 +61,7 @@ class RealtorListFinishSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        sleep_time = 60
+        sleep_time = 600
         print("沉睡时间{}s".format(sleep_time))
         time.sleep(sleep_time)
         req = requests.get(url=realtor_list_spider_close_process_url)
