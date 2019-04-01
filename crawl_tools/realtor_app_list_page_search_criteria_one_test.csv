@@ -1,7 +1,6 @@
 list_criteria
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Carter&state_code=KY&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Shannon&state_code=MO&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
-https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Prince+George's&state_code=MD&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Grenada&state_code=MS&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 
 

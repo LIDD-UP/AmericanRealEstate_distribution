@@ -124,8 +124,8 @@ MYSQL_PASSWORD = '123456'
 # 搜索条件设置
 import pandas as pd
 # root_path = r'F:\PycharmProject\AmericanRealEstate'
-root_path = r'G:\PycharmProject\AmericanRealEstate'
-# root_path = r'/data/project/AmericanRealEstate'
+# root_path = r'G:\PycharmProject\AmericanRealEstate'
+root_path = r'/data/project/AmericanRealEstate'
 
 
 
@@ -145,8 +145,8 @@ list_search_criteria_stored_path = root_path + '/crawl_tools'
 # sql url address
 # 开启web服务进行测试
 # domain = 'http://127.0.0.1:5000'
-domain = 'http://127.0.0.1:8000/spider_server'
-# domain = 'http://138.197.143.39:8000/spider_server'
+# domain = 'http://127.0.0.1:8000/spider_server'
+domain = 'http://138.197.143.39:8000/spider_server'
 # domain = 'http://138.197.143.39:5000'
 # domain = 'http://192.168.0.65:5000'
 # domain = 'http://106.12.196.86:5000'
