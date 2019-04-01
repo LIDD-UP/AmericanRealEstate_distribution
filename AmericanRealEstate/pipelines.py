@@ -25,16 +25,19 @@ class RealtorListStoredByServerPipeline(object):
             "data": data
         }
         list_json_data = json.dumps(post_data)
-        # print("list json data 没有去除空格的大小", len(list_json_data))
+        print("list json data 没有去除空格的大小", len(list_json_data))
         list_json_data_strip = list_json_data.replace(' ', '')
-        # print("list json data 去除空格的大小", len(list_json_data_strip))
+        print("list json data 去除空格的大小", len(list_json_data_strip))
 
         # # 进行数据压缩
-        # json_data_encode = list_json_data.encode()
-        # compress_data = zlib.compress(json_data_encode)
-        # print(len(compress_data))
+        json_data_encode = list_json_data_strip.encode()
+        list_json_data_strip = zlib.compress(json_data_encode)
+        print('压缩后的大小',len(list_json_data_strip))
 
-        result = RealtorListStoredByServerPipeline.list_session.post(url=realtor_list_post_interface_url, json=list_json_data_strip)
+        result = RealtorListStoredByServerPipeline.list_session.post(url=realtor_list_post_interface_url,
+                                                                     data = list_json_data_strip,
+                                                                     # json=list_json_data_strip
+                                                                     )
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorListPageJsonItem):
@@ -69,15 +72,18 @@ class RealtorDetailStoredByServerPipeline(object):
             "data": data
         }
         detail_json_data = json.dumps(post_data)
-        # print("list json data 没有去除空格的大小", len(detail_json_data))
+        print("list json data 没有去除空格的大小", len(detail_json_data))
         detail_json_data_strip = detail_json_data.replace(' ', '')
-        # print("list json data 去除空格的大小", len(detail_json_data_strip))
+        print("list json data 去除空格的大小", len(detail_json_data_strip))
 
-        # json_data_encode = detail_json_data.encode()
-        # compress_data = zlib.compress(json_data_encode)
-        # print(len(compress_data))
+        json_data_encode = detail_json_data_strip.encode()
+        detail_json_data_strip = zlib.compress(json_data_encode)
+        print('压缩后的大小',len(detail_json_data_strip))
 
-        result = RealtorDetailStoredByServerPipeline.detail_session.post(url=realtor_detail_post_interface_url, json=detail_json_data_strip)
+        result = RealtorDetailStoredByServerPipeline.detail_session.post(url=realtor_detail_post_interface_url,
+                                                                         data = detail_json_data_strip,
+                                                                         # json=detail_json_data_strip
+                                                                         )
 
     def process_item(self, item, spider):
         if isinstance(item, RealtorDetailPageJsonItem):
