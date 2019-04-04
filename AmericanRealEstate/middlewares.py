@@ -15,6 +15,7 @@ import os
 # from AmericanRealEstate.settings import spider_close_process_shell_path
 from AmericanRealEstate.settings import realtor_list_spider_close_process_url
 from AmericanRealEstate.settings import realtor_detail_spider_close_process_url
+from AmericanRealEstate.settings import close_spider1_client_server_url, close_spider2_client_server_url, close_spider_server_url
 
 
 class RealtorListPageMiddleware(object):
@@ -61,7 +62,7 @@ class RealtorListFinishSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        sleep_time = 600
+        sleep_time = 10
         print("沉睡时间{}s".format(sleep_time))
         time.sleep(sleep_time)
         req = requests.get(url=realtor_list_spider_close_process_url)
@@ -83,11 +84,18 @@ class RealtorDetailFinishSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
+        # 服务器数据可能还没有处理完，这里需要加一个延迟
         # time.sleep(600)
-        req = requests.get(url=realtor_detail_spider_close_process_url)
-        # print(req.text)
-        print('detail spider 整个过程完毕')
 
+        # 关闭服务器
+        req1 = requests.get(url=close_spider_server_url)
+        print('爬虫服务器已接受到关闭服务请求')
+        # 爬虫1 106 关闭
+        req2 = requests.get(url=close_spider1_client_server_url)
+        # 爬虫2 86 关闭
+        # req3 = requests.get(url=close_spider2_client_server_url)
+
+        print('detail spider 整个过程完毕')
 
 
 class RealtorDetailPageAMiddleware(object):

@@ -162,6 +162,11 @@ realtor_get_list_search_criteria_url = domain + '/get_list_search_criteria/'
 realtor_get_detail_search_criteria_url = domain + '/get_detail_search_criteria/'
 
 
+close_spider1_client_server_url = 'http://106.12.196.106:5000/close_client_server/'
+close_spider2_client_server_url = 'http://106.12.196.86:5000/close_client_server/'
+close_spider_server_url = domain + '/close_server/'
+
+
 
 
 # realtor domain url
