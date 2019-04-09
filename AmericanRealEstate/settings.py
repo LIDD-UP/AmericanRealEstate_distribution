@@ -135,7 +135,7 @@ root_path = r'/data/project/AmericanRealEstate'
 
 # 测试运行情况
 # realtor_list_search_criteria_test = list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria_test.csv')['list_criteria'])
-realtor_list_search_criteria = list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria_one_test.csv')['list_criteria'])
+realtor_list_search_criteria = list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria_one.csv')['list_criteria'])
 # realtor_list_search_criteria = list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_list_page_search_criteria_two_test.csv')['list_criteria'])
 
 realtor_detail_search_criteria = list(pd.read_csv(root_path + r'/crawl_tools/realtor_app_detail_page_search_criteria.csv')['detail_criteria'])
