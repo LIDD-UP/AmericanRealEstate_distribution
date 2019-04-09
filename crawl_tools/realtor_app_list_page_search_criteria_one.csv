@@ -3056,3 +3056,4 @@ https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Meco
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Jefferson&state_code=LA&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Keith&state_code=NE&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Grayson&state_code=VA&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
+https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=El+Paso&state_code=TX&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid

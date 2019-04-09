@@ -2351,7 +2351,6 @@ https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Adai
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Prairie&state_code=MT&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Piatt&state_code=IL&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Robertson&state_code=TX&sort=relevance&schema=mapsearch&prop_status=for_rent&client_id=rdc_mobile_native%2C9.4.2%2Candroid
-https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=El+Paso&state_code=TX&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Sevier&state_code=UT&sort=relevance&schema=mapsearch&prop_status=for_rent&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Holmes&state_code=OH&sort=relevance&schema=mapsearch&prop_status=for_rent&client_id=rdc_mobile_native%2C9.4.2%2Candroid
 https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset=0&limit=200&county=Wayne&state_code=WV&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid

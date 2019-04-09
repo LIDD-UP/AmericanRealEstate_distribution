@@ -72,9 +72,9 @@ class RealtorDetailStoredByServerPipeline(object):
             "data": data
         }
         detail_json_data = json.dumps(post_data)
-        print("list json data 没有去除空格的大小", len(detail_json_data))
+        print("detail json data 没有去除空格的大小", len(detail_json_data))
         detail_json_data_strip = detail_json_data.replace(' ', '')
-        print("list json data 去除空格的大小", len(detail_json_data_strip))
+        print("detail json data 去除空格的大小", len(detail_json_data_strip))
 
         json_data_encode = detail_json_data_strip.encode()
         detail_json_data_strip = zlib.compress(json_data_encode)
