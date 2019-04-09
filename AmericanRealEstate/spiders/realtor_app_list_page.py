@@ -3,7 +3,7 @@ import json
 import re
 
 import scrapy
-
+import datetime
 
 from AmericanRealEstate.items import RealtorListPageJsonItem
 from AmericanRealEstate.settings import realtor_list_search_criteria
@@ -16,14 +16,14 @@ class RealtorAppListPageSpider(scrapy.Spider):
     start_urls = [x for x in realtor_list_search_criteria]
     last_item = False
     last_url = start_urls[-1]
-    last_url_flag = re.findall('offset=0&limit=200&(.*)&sort=relevance&schema=mapsearch&client_id=', last_url)[0]
+    last_url_flag = re.findall('offset=0&limit=200&(.*)&sort=relevance&schema=mapsearch', last_url)[0]
     custom_settings = {
         "ITEM_PIPELINES": {
             # 'AmericanRealEstate.pipelines.RealtorListPageMysqlsqlPipeline': 301,
             'AmericanRealEstate.pipelines.RealtorListStoredByServerPipeline': 302
         },
         "DOWNLOADER_MIDDLEWARES": {
-            # 'AmericanRealEstate.middlewares.RealtorListPageMiddleware': 545,
+            'AmericanRealEstate.middlewares.RealtorDetailPageAMiddleware': 545,
 
         },
         "SPIDER_MIDDLEWARES": {
@@ -52,6 +52,13 @@ class RealtorAppListPageSpider(scrapy.Spider):
 
     }
 
+    def __init__(self,
+                 *args, **kwargs):
+        super(RealtorAppListPageSpider, self).__init__(*args, **kwargs)
+        true_scrapy_start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        true_scrapy_start_time = datetime.datetime.strptime(true_scrapy_start_time, '%Y-%m-%d %H:%M:%S')
+        self.scrapy_start_time = true_scrapy_start_time
+
     def parse(self, response):
         res_text = response.text
         res_url = response.url
@@ -64,7 +71,8 @@ class RealtorAppListPageSpider(scrapy.Spider):
         county_name = re.findall(r'county=(.*)&state_code', res_url)[0]
         state_code = re.findall(r'state_code=(.*)&sort=relevance', res_url)[0]
 
-        present_url_flag = re.findall('limit=200&(.*)&sort=relevance&schema=mapsearch&client_id=', response.url)
+        present_url_flag = re.findall('limit=200&(.*)&sort=relevance&schema=mapsearch', response.url)
+        is_for_rent_flag = re.findall('for_rent', response.url)
         # print(present_url_flag)
         # print(RealtorAppListPageSpider.last_url_flag)
         if len(present_url_flag) != 0:
@@ -80,8 +88,12 @@ class RealtorAppListPageSpider(scrapy.Spider):
 
         if len(json_res_listings) != 0:
             yield realtor_list_page_item
-            next_url = 'https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset={}&limit=200&county={}&state_code={}&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid'.format(offset+200,county_name,state_code)
-            yield scrapy.Request(url=next_url,callback=self.parse)
+            if len(is_for_rent_flag) > 0:
+                next_url = 'https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset={}&limit=200&county={}&state_code={}&sort=relevance&schema=mapsearch&prop_status=for_rent&client_id=rdc_mobile_native%2C9.4.2%2Candroid'.format(offset+200,county_name,state_code)
+                yield scrapy.Request(url=next_url,callback=self.parse)
+            if len(is_for_rent_flag) == 0:
+                next_url = 'https://mapi-ng.rdc.moveaws.com/api/v1/properties?offset={}&limit=200&county={}&state_code={}&sort=relevance&schema=mapsearch&client_id=rdc_mobile_native%2C9.4.2%2Candroid'.format(offset+200,county_name,state_code)
+                yield scrapy.Request(url=next_url,callback=self.parse)
 
 
 

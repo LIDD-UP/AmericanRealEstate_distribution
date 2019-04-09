@@ -62,7 +62,7 @@ class RealtorListFinishSpiderMiddleware(object):
         return s
 
     def spider_closed(self, spider):
-        sleep_time = 10
+        sleep_time = 300
         print("列表页爬虫执行完成,沉睡时间{}s,发送请求，执行列表页爬取完成后的处理".format(sleep_time))
         time.sleep(sleep_time)
         req = requests.get(url=realtor_list_spider_close_process_url)
@@ -85,7 +85,7 @@ class RealtorDetailFinishSpiderMiddleware(object):
 
     def spider_closed(self, spider):
         # 服务器数据可能还没有处理完，这里需要加一个延迟
-        sleep_time = 10
+        sleep_time = 500
         print("详情页爬虫执行完成，沉睡时间{}s,发送请求关闭server".format(sleep_time))
         time.sleep(sleep_time)
 

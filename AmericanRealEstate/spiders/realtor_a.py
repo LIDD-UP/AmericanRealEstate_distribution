@@ -18,6 +18,7 @@ class RealtorASpider(scrapy.Spider):
     last_url = start_urls[-1]
     last_url_flag = re.findall(r'api/v1/properties/(\d.*)\?client_id=', last_url)[0]
     last_item = False
+
     def __init__(self,
                  *args, **kwargs):
         super(RealtorASpider, self).__init__(*args, **kwargs)
